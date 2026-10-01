@@ -2,7 +2,7 @@
 
 A friendly kindergarten math town with **10 playable games and 9 original monster friends**. Every game has a short narrated animated lesson, visual hints, gentle retry feedback, and five-round independent practice. Emma's British English voice is bundled with the app.
 
-This release is prepared locally. The public browser demo and GitHub downloads are pending publication approval. Intended public address: `https://agammann.github.io/blossom-math-town/`.
+**[Play Blossom](https://blossom-math-town.alx21.chatgpt.site/)** · **[GitHub browser demo](https://agammann.github.io/blossom-math-town/)** · **[Android APK and source downloads](https://github.com/agammann/blossom-math-town/releases/latest)**
 
 ![The Blossom town and its nine monster teachers](docs/town.png)
 

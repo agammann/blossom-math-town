@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": [
+    "Home audio icon and Emma identity initialize correctly.",
+    "Real Emma audio works with speechSynthesis absent on mobile.",
+    "Escape and opening/closing settings cancel audio.",
+    "Hidden-state handler cancels audio and animation; returning does not resume automatically (visibility shim).",
+    "Replay resumes after visibility cancellation.",
+    "Calm motion and 200% text fit the mobile settings."
+  ],
+  "errors": []
+}

@@ -1,0 +1,9 @@
+Blossom narration
+Voice: Emma (bf_emma), British English.
+Generated locally using Kokoro-82M-v1.0-ONNX (FP32) and kokoro-js 1.2.1.
+Original lesson dialogue: Pip and Milo at speed 1; the other seven monsters at speed 0.96.
+404 finished mono PCM16 audio clips; all lesson text has matching captions.
+Kokoro model and implementation are licensed under Apache License 2.0; see KOKORO-LICENSE.txt.
+https://huggingface.co/hexgrad/Kokoro-82M
+https://github.com/hexgrad/kokoro
+Only finished audio is shipped. No model, voice API, or speech-synthesis service runs in Blossom.

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Ten kindergarten math games with nine friendly monsters and British narration in Blossom.">
+  <title>Blossom · Little math adventures</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%23ff8daf'/%3E%3Ctext x='16' y='25' text-anchor='middle' font-family='sans-serif' font-size='27' font-weight='900' fill='%23212450'%3EB%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="assets/nunito.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="#" class="wordmark" aria-label="Blossom town">Blossom<span class="brand-flower" aria-hidden="true">✿</span></a>
+    <div class="top-controls">
+      <button id="sound" class="sound-button" aria-pressed="true"><span id="sound-icon"></span><span id="sound-label">Sound on</span></button>
+      <button id="settings-open" class="icon-button" aria-label="Grown-up settings"></button>
+    </div>
+  </header>
+  <main id="app"></main>
+  <dialog id="settings" aria-labelledby="settings-title">
+    <div class="dialog-top"><h2 id="settings-title">For grown-ups</h2><button id="settings-close" class="icon-button" aria-label="Close settings"></button></div>
+    <p>Ten kindergarten games with nine monster friends: counting, making 10, adding, comparing groups, shapes, taking away, number order, patterns, sorting, and comparing lengths.</p>
+    <label class="setting-line"><input id="calm-motion" type="checkbox"> Calm motion</label>
+    <h3>Meet the voices</h3>
+    <p>Meet Pip, Nori, Milo, Tilly, Ziggy, Sunny, Otto, Poppy, and Luna. Emma's British English narration plays from audio clips saved with Blossom, with original dialogue and gentle pacing.</p>
+    <p id="voice-status" class="voice-note"></p>
+    <div class="voice-tests"><button class="secondary" id="hear-pip">Hear Pip</button><button class="secondary" id="hear-nori">Hear Nori</button></div>
+    <p class="privacy-note">No child accounts, ads, chat, analytics, or saved progress. Play stays in this tab.</p>
+  </dialog>
+  <noscript><p class="no-script">Blossom needs JavaScript for its counting games. Please enable JavaScript, then reload.</p></noscript>
+</body>
+</html>

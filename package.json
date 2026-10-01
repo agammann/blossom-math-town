@@ -1,0 +1,21 @@
+{
+  "name": "blossom-math-town",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ten friendly kindergarten math games with nine original monster teachers.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {"node": ">=22"},
+  "scripts": {
+    "start": "node scripts/serve.mjs web",
+    "dev": "node scripts/serve.mjs web",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/serve.mjs dist",
+    "test": "node --test tests/*.test.mjs",
+    "android:sync": "npm run build && cap sync android",
+    "android:open": "cap open android"
+  },
+  "dependencies": {"@capacitor/core": "8.5.2"},
+  "devDependencies": {"@capacitor/android": "8.5.2", "@capacitor/cli": "8.5.2"},
+  "overrides": {"xcode": {"uuid": "11.1.1"}}
+}

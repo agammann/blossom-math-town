@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "Real bundled British audio plays and mutes in the Android WebView with airplane mode enabled.",
+    "Counting Garden: five complete practice rounds in the installed APK.",
+    "Snack Lab: five complete practice rounds in the installed APK.",
+    "Addition Pond: five complete practice rounds in the installed APK.",
+    "More or Less Market: five complete practice rounds in the installed APK.",
+    "Shape Studio: five complete practice rounds in the installed APK.",
+    "Take-Away Cave: five complete practice rounds in the installed APK.",
+    "Number Trail: five complete practice rounds in the installed APK.",
+    "Pattern Parade: five complete practice rounds in the installed APK.",
+    "Sort & Spot: five complete practice rounds in the installed APK.",
+    "Measure Meadow: five complete practice rounds in the installed APK.",
+    "Android system Back returns from an activity to the town.",
+    "Sending the Android app to the background cancels narration; returning does not resume it.",
+    "All 404 clips load and decode from APK assets without internet."
+  ],
+  "errors": [],
+  "passed": true,
+  "android": "API 36 / Android 16 emulator",
+  "webview": "Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36"
+}

@@ -1,0 +1,102 @@
+{
+  "checks": [
+    "Counting Garden: five rounds, wrong-answer retry, hint/reset, completion and replay.",
+    "Snack Lab: five rounds, wrong-answer retry, hint/reset, completion and replay.",
+    "Addition Pond: five rounds, wrong-answer retry, hint/reset, completion and replay.",
+    "More or Less Market: five rounds, wrong-answer retry, hint/reset, completion and replay.",
+    "Shape Studio: five rounds, wrong-answer retry, hint/reset, completion and replay.",
+    "Take-Away Cave: five rounds, wrong-answer retry, hint/reset, completion and replay.",
+    "Number Trail: five rounds, wrong-answer retry, hint/reset, completion and replay.",
+    "Pattern Parade: five rounds, wrong-answer retry, hint/reset, completion and replay.",
+    "Sort & Spot: five rounds, wrong-answer retry, hint/reset, completion and replay.",
+    "Measure Meadow: five rounds, wrong-answer retry, hint/reset, completion and replay.",
+    "All ten narrated animated demos finish correctly; restart/stop/mute/browser Back cancel their previous flows.",
+    "All ten games load every image and fit 320/390/768/1440px with 44px touch targets and reduced motion.",
+    "All 404 narration clips return successfully and decode with correct durations."
+  ],
+  "errors": [],
+  "missing": [],
+  "layouts": [
+    {
+      "width": 320,
+      "games": 10,
+      "noOverflow": true,
+      "allImages": true,
+      "touchTargets44": true
+    },
+    {
+      "width": 390,
+      "games": 10,
+      "noOverflow": true,
+      "allImages": true,
+      "touchTargets44": true
+    },
+    {
+      "width": 768,
+      "games": 10,
+      "noOverflow": true,
+      "allImages": true,
+      "touchTargets44": true
+    },
+    {
+      "width": 1440,
+      "games": 10,
+      "noOverflow": true,
+      "allImages": true,
+      "touchTargets44": true
+    }
+  ],
+  "demos": [
+    {
+      "view": "count",
+      "realAudioStarts": 5,
+      "feedback": "3 berries altogether."
+    },
+    {
+      "view": "sort",
+      "realAudioStarts": 3,
+      "feedback": "Now you can explore. Press My turn!"
+    },
+    {
+      "view": "trail",
+      "realAudioStarts": 3,
+      "feedback": "Now you can explore. Press My turn!"
+    },
+    {
+      "view": "subtract",
+      "realAudioStarts": 3,
+      "feedback": "Now you can explore. Press My turn!"
+    },
+    {
+      "view": "measure",
+      "realAudioStarts": 3,
+      "feedback": "Now you can explore. Press My turn!"
+    },
+    {
+      "view": "compare",
+      "realAudioStarts": 3,
+      "feedback": "5 is more than 3. 3 is fewer than 5."
+    },
+    {
+      "view": "pattern",
+      "realAudioStarts": 3,
+      "feedback": "Now you can explore. Press My turn!"
+    },
+    {
+      "view": "add",
+      "realAudioStarts": 8,
+      "feedback": "2 + 3 = 5. Five berries altogether."
+    },
+    {
+      "view": "snack",
+      "realAudioStarts": 7,
+      "feedback": "6 + 4 = 10. A full tray!"
+    },
+    {
+      "view": "shape",
+      "realAudioStarts": 4,
+      "feedback": "Circles, triangles, squares, and long rectangles!"
+    }
+  ],
+  "passed": true
+}

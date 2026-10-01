@@ -25,6 +25,8 @@ Chromium checks passed for all ten games:
 
 All nine monster gesture previews and clicks passed. Eight gesture types are present: wink, wave, dance, kiss, point, peace sign, double wave, and a happy fist raise. Keyboard Enter/Space, mobile taps, repeated activation, and cleanup when entering/returning from games passed. The larger home artwork and transparent game-card backgrounds fit 320, 390, 768, and 1440 px. Calm/reduced motion shows static gesture poses without movement. Original pose sprites have alpha transparency.
 
+Version 1.0.1 places one of each friend around the illustrated town and removes all duplicate monster artwork from the compact game buttons. All ten game buttons open the correct lesson and return to town. Phone/tablet horizontal exploration and focus scrolling passed with the larger sprites; the page itself has no horizontal overflow.
+
 ## Android
 
 The Android Studio project built successfully using **JDK 21, Gradle 8.14.3, and Android SDK 36**. The debug APK contains the same canonical web files and all narration assets. Native Back handles game routes before exiting the app.

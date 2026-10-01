@@ -89,6 +89,7 @@ The downloadable APK is **debug-signed for testing**, not a Play Store release. 
 
 - Choose a game, watch its lesson, or press **My turn**.
 - Hover over a friend in the town to preview its gesture. Click, tap, or use Enter/Space to play a wink, wave, dance, kiss, point, peace sign, double wave, or happy fist raise.
+- Each of the nine friends appears once in the town. On a phone, swipe across the town to explore; keyboard focus also brings each friend into view. The ten game buttons sit below the scene.
 - Tap or click objects and answers. Keyboard users can Tab to a control and press Enter or Space. No dragging is required.
 - **Show a hint**, **Start over**, **Hear again**, **Town**, and browser Back all work.
 - **Sound off** stops narration immediately. Captions and visual hints remain available when audio is muted, blocked, or unavailable.

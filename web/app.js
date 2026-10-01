@@ -80,9 +80,9 @@ function openView(view) {
   if(view==='town') {
     state={view:'town',caption:''};
     $('#app').innerHTML=`<section class="town expanded-town" aria-label="Blossom town. Choose an adventure.">
-      ${art('town','class="town-art" fetchpriority="high"')}
-      <div class="town-scene"><h1>Choose an adventure</h1><p class="town-play-note">Tap a monster to play.</p><div class="town-crew" aria-label="Your monster friends">${friendMarkup()}</div><p id="town-play-status" class="town-play-status" role="status" aria-live="polite"></p></div>
-      <div class="destinations">${Object.entries(GAMES).map(([view,game])=>`<button class="destination" id="open-${view}" aria-label="${game.title}"><span class="destination-art">${art(game.teacher)}${view==='shape'?art('sunny'):''}</span><span class="destination-title">${game.title}</span><span class="destination-skill">${game.skill}</span></button>`).join('')}</div>
+      <div class="town-scene"><div class="town-intro"><h1>Choose an adventure</h1><p class="town-play-note">Tap a monster to play.<span class="town-swipe-note"> Swipe to explore.</span></p></div><div class="town-window" tabindex="0" role="region" aria-label="Explore Blossom town"><div class="town-world">${art('town','class="town-art" fetchpriority="high"')}<div class="town-crew" aria-label="Your monster friends">${friendMarkup()}</div></div></div></div>
+      <p id="town-play-status" class="town-play-status" role="status" aria-live="polite"></p>
+      <div class="destinations">${Object.entries(GAMES).map(([view,game])=>`<button class="destination" id="open-${view}" aria-label="${game.title}"><span class="destination-title">${game.title}</span><span class="destination-skill">${game.skill}</span></button>`).join('')}</div>
     </section>`;
     for(const view of Object.keys(GAMES))$('#open-'+view).onclick=()=>navigate(view);
     townCleanup=activateFriends($('.town'));

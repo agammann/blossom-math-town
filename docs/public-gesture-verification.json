@@ -1,7 +1,8 @@
 {
   "url": "https://blossom-math-town.alx21.chatgpt.site/",
   "checks": [
-    "Nine hover previews and click gestures, eight gesture types, keyboard Enter/Space, rapid replay, and cleanup when entering/returning from a game.",
+    "Exactly nine unique interactive friends, no duplicate monster images on game buttons, eight gesture types, keyboard Enter/Space, rapid replay, and cleanup when entering/returning from a game.",
+    "All ten compact game buttons open the correct lesson and return to the unique town friends.",
     "Calm motion keeps the static gesture and caption, with no movement."
   ],
   "layouts": [

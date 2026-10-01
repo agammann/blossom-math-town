@@ -16,6 +16,7 @@ export function activateFriends(root){
     const button=root.querySelector('#friend-'+friend.id),pose=button.querySelector('.friend-pose');
     const ready=()=>{if(pose.naturalWidth)button.classList.add('pose-ready');};pose.addEventListener('load',ready);ready();
     const preview=()=>button.classList.add('friend-preview');
+    const focus=()=>{button.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});preview();};
     const unpreview=()=>{button.classList.remove('friend-preview');button.style.removeProperty('--friend-lean');};
     const move=event=>{if(event.pointerType!=='mouse')return;const box=button.getBoundingClientRect();button.style.setProperty('--friend-lean',`${((event.clientX-box.left)/box.width-.5)*10}deg`);};
     const play=()=>{
@@ -24,7 +25,7 @@ export function activateFriends(root){
       timers.set(friend.id,setTimeout(()=>{button.classList.remove('friend-playing');timers.delete(friend.id);},2100));
     };
     const enter=event=>{if(event.pointerType==='mouse')preview();};
-    for(const [event,fn] of [['pointerenter',enter],['pointerleave',unpreview],['pointermove',move],['focus',preview],['blur',unpreview],['click',play]]){button.addEventListener(event,fn);cleanup.push(()=>button.removeEventListener(event,fn));}
+    for(const [event,fn] of [['pointerenter',enter],['pointerleave',unpreview],['pointermove',move],['focus',focus],['blur',unpreview],['click',play]]){button.addEventListener(event,fn);cleanup.push(()=>button.removeEventListener(event,fn));}
     cleanup.push(()=>pose.removeEventListener('load',ready));
   }
   return ()=>{for(const timer of timers.values())clearTimeout(timer);for(const fn of cleanup)fn();};

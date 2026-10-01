@@ -8,6 +8,7 @@ Original Blossom lesson text, browser code, and the original town/monster/object
 | Kokoro-82M v1.0 and Kokoro ONNX | British Emma (`bf_emma`) voice used to render finished audio clips | [Apache License 2.0](web/assets/narration/KOKORO-LICENSE.txt); [model](https://huggingface.co/hexgrad/Kokoro-82M), [ONNX conversion](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX) |
 | kokoro-js 1.2.1 | Local narration production only, not shipped as a runtime dependency | [Apache License 2.0](web/assets/narration/KOKORO-LICENSE.txt); [implementation](https://github.com/hexgrad/kokoro) |
 | Capacitor 8.5.2 | Local Android WebView wrapper | MIT; [license](licenses/CAPACITOR-LICENSE.txt), [source](https://github.com/ionic-team/capacitor) |
+| esbuild 0.25.12 | Bundles browser modules for the local Vega WebView entry page | MIT; [source](https://github.com/evanw/esbuild) |
 | AndroidX and Gradle | Android build/runtime components | Apache License 2.0; [AndroidX](https://source.android.com/docs/setup/about/licenses), [Gradle](https://github.com/gradle/gradle/blob/master/LICENSE) |
 
 The [narration notice](web/assets/narration/NOTICE.txt) identifies Emma and the production settings. Only finished audio files are bundled; no inference model or hosted voice API is included. Emma is a synthetic British English voice, and is not presented as the voice of any actor or show character.

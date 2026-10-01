@@ -62,7 +62,7 @@ export class MonsterVoices {
       audio.onended=done;
       audio.onerror=()=>failed();
       audio.onplaying=()=>{if(this.sequence===token){this.issue='';this.onChange?.();}};
-      audio.src=new URL(clip.src,import.meta.url).href;
+      audio.src=new URL(clip.src,document.baseURI).href;
       timeout=setTimeout(()=>failed(),Math.ceil(clip.duration*1000)+6000);
       try{const playing=audio.play();playing?.catch(failed);}catch(error){failed(error);}
     });

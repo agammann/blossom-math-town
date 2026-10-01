@@ -4,6 +4,10 @@ import { GAMES } from './lessons.js';
 import { isExtra,prepareExtraRound,extraPrompt,renderExtra } from './extra-games.js';
 import { isMore,prepareMoreRound,morePrompt,renderMore } from './more-games.js';
 import { friendMarkup,activateFriends } from './friends.js';
+import { activateTv } from './tv.js';
+
+const tvMode=document.documentElement.dataset.tv==='true'||new URLSearchParams(location.search).has('tv');
+if(tvMode)document.documentElement.dataset.tv='true';
 
 const $ = selector => document.querySelector(selector);
 const art = (name, extra='') => `<img src="assets/${name}.webp" alt="" ${extra}>`;
@@ -80,7 +84,7 @@ function openView(view) {
   if(view==='town') {
     state={view:'town',caption:''};
     $('#app').innerHTML=`<section class="town expanded-town" aria-label="Blossom town. Choose an adventure.">
-      <div class="town-scene"><div class="town-intro"><h1>Choose an adventure</h1><p class="town-play-note">Tap a monster to play.<span class="town-swipe-note"> Swipe to explore.</span></p></div><div class="town-window" tabindex="0" role="region" aria-label="Explore Blossom town"><div class="town-world">${art('town','class="town-art" fetchpriority="high"')}<div class="town-crew" aria-label="Your monster friends">${friendMarkup()}</div></div></div></div>
+      <div class="town-scene"><div class="town-intro"><h1>Choose an adventure</h1><p class="town-play-note">${tvMode?'Use the remote to choose a game. Press Select to play.':'Tap a monster to play.<span class="town-swipe-note"> Swipe to explore.</span>'}</p></div><div class="town-window" tabindex="0" role="region" aria-label="Explore Blossom town"><div class="town-world">${art('town','class="town-art" fetchpriority="high"')}<div class="town-crew" aria-label="Your monster friends">${friendMarkup()}</div></div></div></div>
       <p id="town-play-status" class="town-play-status" role="status" aria-live="polite"></p>
       <div class="destinations">${Object.entries(GAMES).map(([view,game])=>`<button class="destination" id="open-${view}" aria-label="${game.title}"><span class="destination-title">${game.title}</span><span class="destination-skill">${game.skill}</span></button>`).join('')}</div>
     </section>`;
@@ -98,6 +102,7 @@ function openView(view) {
   $('#app').innerHTML=`<section class="activity">
     <div class="activity-header"><div class="activity-title"><button class="town-back" id="town-back">Town</button><h1 tabindex="-1">${GAMES[view].title}</h1></div>
     <div class="mode-tabs" aria-label="Lesson mode"><button id="watch-tab" class="selected" aria-pressed="true">Watch ${name}</button><button id="practice-tab" aria-pressed="false">My turn</button></div></div>
+    ${tvMode?'<p class="tv-controls-note">Arrows move · Select chooses · Back returns to town</p>':''}
     <div class="lesson-layout"><aside class="teacher" aria-label="Your monster teacher"><p class="teacher-name">${view==='shape'?'Ziggy':name}</p><div class="teachers-art">${art(character(),'class="teacher-image"')}${view==='shape'?'<img class="teacher-buddy" src="assets/sunny.webp" alt="Sunny is helping too">':''}</div>
       <div class="speech"><p id="caption" role="status" aria-live="polite" aria-atomic="true"></p><div class="replay-line"><button id="replay-caption" class="replay-caption">${icons.replay}Hear again</button><span class="caption-note" id="speech-mode">Captions on</span></div></div></aside>
       <section class="work-area" id="work" aria-label="Math play area"></section></div></section>`;
@@ -320,6 +325,7 @@ window.addEventListener('hashchange',()=>openView(Object.hasOwn(GAMES,location.h
 window.addEventListener('pagehide',stopFlow);
 document.addEventListener('visibilitychange',()=>{if(document.hidden){stopFlow();if(state.view!=='town')renderWork();}});
 openView(Object.hasOwn(GAMES,location.hash.slice(1))?location.hash.slice(1):'town');
+if(tvMode)activateTv({navigate});
 
 // Optional WebMCP support uses the same in-tab game state and navigation.
 const context=document.modelContext;

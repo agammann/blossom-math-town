@@ -5,17 +5,32 @@
   "description": "Ten friendly kindergarten math games with nine original monster teachers.",
   "type": "module",
   "license": "MIT",
-  "engines": {"node": ">=22"},
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "start": "node scripts/serve.mjs web",
     "dev": "node scripts/serve.mjs web",
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve.mjs dist",
     "test": "node --test tests/*.test.mjs",
+    "vega:web": "node scripts/build-vega-web.mjs",
+    "vega:prepare": "node scripts/prepare-vega.mjs",
+    "vega:native:prepare": "node scripts/prepare-vega-native.mjs",
     "android:sync": "npm run build && cap sync android",
     "android:open": "cap open android"
   },
-  "dependencies": {"@capacitor/core": "8.5.2"},
-  "devDependencies": {"@capacitor/android": "8.5.2", "@capacitor/cli": "8.5.2"},
-  "overrides": {"xcode": {"uuid": "11.1.1"}}
+  "dependencies": {
+    "@capacitor/core": "8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/android": "8.5.2",
+    "@capacitor/cli": "8.5.2",
+    "esbuild": "^0.25.12"
+  },
+  "overrides": {
+    "xcode": {
+      "uuid": "11.1.1"
+    }
+  }
 }

@@ -11,3 +11,6 @@ android/.idea/
 android/captures/
 *.jks
 *.keystore
+vega-web/
+vega-app/
+vega-native-app/

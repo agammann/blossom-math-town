@@ -1,6 +1,6 @@
 # Blossom 🌸
 
-A friendly kindergarten math town with **10 playable games and 9 original monster friends**. Every game has a short narrated animated lesson, visual hints, gentle retry feedback, and five-round independent practice. Emma's British English voice is bundled with the app.
+A friendly kindergarten math town with **10 playable games and 9 original monster friends**. The browser and Android editions have short narrated animated lessons, visual hints, gentle retry feedback, and five-round independent practice. Emma's British English voice is bundled with those editions. The Vega TV edition has on-screen lessons and remote-controlled practice.
 
 **[Play Blossom](https://blossom-math-town.alx21.chatgpt.site/)** · **[GitHub browser demo](https://agammann.github.io/blossom-math-town/)** · **[Android APK and source downloads](https://github.com/agammann/blossom-math-town/releases/latest)**
 
@@ -22,6 +22,10 @@ A friendly kindergarten math town with **10 playable games and 9 original monste
 | Measure Meadow | Luna | Compare longer, shorter, and equal lengths |
 
 The game checks are deterministic. A picture never becomes correct because of a language-model response. This is a first kindergarten prototype, not a full curriculum or assessment system.
+
+## Vega OS TV build
+
+The native Vega TV app has ten five-round math games, character artwork, and a directional remote interface with visible focus, Select, and Back. It runs without a network connection. The native app was built with Vega SDK 0.24 and tested in the Ubuntu Vega Virtual Device. The browser and Android editions additionally include narrated lessons; the native Vega edition currently uses on-screen text. See [Vega build and demo instructions](vega/README.md).
 
 ## Install the Android app
 

@@ -1,0 +1,39 @@
+{
+  "url": "https://blossom-math-town.alx21.chatgpt.site/",
+  "checks": [
+    "Nine hover previews and click gestures, eight gesture types, keyboard Enter/Space, rapid replay, and cleanup when entering/returning from a game.",
+    "Calm motion keeps the static gesture and caption, with no movement."
+  ],
+  "layouts": [
+    {
+      "width": 320,
+      "transparentCards": true,
+      "allImages": true,
+      "touchTargets44": true,
+      "reducedMotion": true
+    },
+    {
+      "width": 390,
+      "transparentCards": true,
+      "allImages": true,
+      "touchTargets44": true,
+      "reducedMotion": true
+    },
+    {
+      "width": 768,
+      "transparentCards": true,
+      "allImages": true,
+      "touchTargets44": true,
+      "reducedMotion": true
+    },
+    {
+      "width": 1440,
+      "transparentCards": true,
+      "allImages": true,
+      "touchTargets44": true,
+      "reducedMotion": true
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

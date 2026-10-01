@@ -21,11 +21,15 @@ Chromium checks passed for all ten games:
 - Audio also works when `speechSynthesis` is absent. Opening/closing settings and Escape cancel playback. Captions keep play available when narration is unavailable.
 - Calm motion and 200% text fit the mobile settings. The hidden-page cancellation handler was tested with a visibility shim in headless Chromium; that check is not a physical OS tab-switch test.
 
+## Interactive home
+
+All nine monster gesture previews and clicks passed. Eight gesture types are present: wink, wave, dance, kiss, point, peace sign, double wave, and a happy fist raise. Keyboard Enter/Space, mobile taps, repeated activation, and cleanup when entering/returning from games passed. The larger home artwork and transparent game-card backgrounds fit 320, 390, 768, and 1440 px. Calm/reduced motion shows static gesture poses without movement. Original pose sprites have alpha transparency.
+
 ## Android
 
 The Android Studio project built successfully using **JDK 21, Gradle 8.14.3, and Android SDK 36**. The debug APK contains the same canonical web files and all narration assets. Native Back handles game routes before exiting the app.
 
-The final APK was installed and verified in an **Android 16 / API 36 emulator**, using its actual Android System WebView (Chrome 133), with airplane mode enabled. All ten games completed five practice rounds. All **404** voice clips loaded and decoded from APK assets offline. Real narration and mute worked. Android system Back returned to the town, and sending the app to the background cancelled narration without resuming it on return. There were no runtime page errors or missing narration entries. The APK requests no internet permission.
+The final APK was installed and verified in an **Android 16 / API 36 emulator**, using its actual Android System WebView (Chrome 133), with airplane mode enabled. All nine interactive home gestures worked with the larger transparent artwork. All ten games completed five practice rounds. All **404** voice clips loaded and decoded from APK assets offline. Real narration and mute worked. Android system Back returned to the town, and sending the app to the background cancelled narration without resuming it on return. There were no runtime page errors or missing narration entries. The APK requests no internet permission.
 
 Physical phones/tablets and Play Store distribution have not been tested. This is a debug-signed prototype; it requires production signing and device testing before store release. The browser and Android JSON evidence is included in this directory.
 

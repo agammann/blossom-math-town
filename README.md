@@ -23,7 +23,18 @@ A friendly kindergarten math town with **10 playable games and 9 original monste
 
 The game checks are deterministic. A picture never becomes correct because of a language-model response. This is a first kindergarten prototype, not a full curriculum or assessment system.
 
-## Run locally
+## Install the Android app
+
+On your Android phone or tablet, **[download the Blossom APK from GitHub](https://github.com/agammann/blossom-math-town/releases/latest/download/Blossom-Android-debug.apk)**.
+
+1. Open that download link on your Android device. The APK is about 85 MB.
+2. When the download finishes, open **Blossom-Android-debug.apk** from your Downloads folder or notification.
+3. If Android asks for permission, allow your browser or file manager to install this download, then choose **Install**.
+4. Open **Blossom** and play. The games, pictures, and British narration are included for offline use.
+
+You can also open the [GitHub releases page](https://github.com/agammann/blossom-math-town/releases/latest) and choose the APK under **Assets**. Android 7.0 or newer is required. This is a debug-signed prototype, tested in an Android 16 emulator; physical phones and tablets still need testing.
+
+## Run the browser version locally
 
 Install **Node.js 22 or newer** (with npm), then:
 
@@ -44,7 +55,7 @@ npm run preview    # serve the built website at the same local address
 
 Upload the contents of `dist/` to a static web host to share your own browser version. Hash routes work on simple hosts. Use an HTTP server rather than double-clicking `index.html`, because the app uses JavaScript modules. Stop the server with Ctrl+C.
 
-## Android Studio
+## Develop the Android app in Android Studio
 
 The `android/` directory is a real Capacitor Android Studio project, not a link to the hosted website. It packages the same ten games, artwork, fonts, and all 404 voice clips locally.
 
@@ -77,6 +88,7 @@ The downloadable APK is **debug-signed for testing**, not a Play Store release. 
 ## Play and accessibility
 
 - Choose a game, watch its lesson, or press **My turn**.
+- Hover over a friend in the town to preview its gesture. Click, tap, or use Enter/Space to play a wink, wave, dance, kiss, point, peace sign, double wave, or happy fist raise.
 - Tap or click objects and answers. Keyboard users can Tab to a control and press Enter or Space. No dragging is required.
 - **Show a hint**, **Start over**, **Hear again**, **Town**, and browser Back all work.
 - **Sound off** stops narration immediately. Captions and visual hints remain available when audio is muted, blocked, or unavailable.

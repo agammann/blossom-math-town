@@ -3,6 +3,7 @@ import { MonsterVoices } from './voice.js';
 import { GAMES } from './lessons.js';
 import { isExtra,prepareExtraRound,extraPrompt,renderExtra } from './extra-games.js';
 import { isMore,prepareMoreRound,morePrompt,renderMore } from './more-games.js';
+import { friendMarkup,activateFriends } from './friends.js';
 
 const $ = selector => document.querySelector(selector);
 const art = (name, extra='') => `<img src="assets/${name}.webp" alt="" ${extra}>`;
@@ -17,6 +18,7 @@ const sets=Object.fromEntries(Object.keys(GAMES).map(view=>[view,0]));
 let epoch=0;
 let voiceEpoch=0;
 let state={view:'town',caption:''};
+let townCleanup=()=>{};
 const motionQuery=matchMedia('(prefers-reduced-motion: reduce)');
 let calm=motionQuery.matches;
 const voices = new MonsterVoices(() => queueMicrotask(updateVoiceUi));
@@ -73,15 +75,17 @@ function navigate(view) {
   else location.hash=view;
 }
 function openView(view) {
+  townCleanup();townCleanup=()=>{};
   stopFlow();
   if(view==='town') {
     state={view:'town',caption:''};
     $('#app').innerHTML=`<section class="town expanded-town" aria-label="Blossom town. Choose an adventure.">
       ${art('town','class="town-art" fetchpriority="high"')}
-      <div class="town-scene"><h1>Choose an adventure</h1><div class="town-crew" aria-label="Your monster friends">${['pip','nori','milo','tilly','ziggy','sunny','otto','poppy','luna'].map(name=>`<figure>${art(name)}<figcaption>${name[0].toUpperCase()+name.slice(1)}</figcaption></figure>`).join('')}</div></div>
+      <div class="town-scene"><h1>Choose an adventure</h1><p class="town-play-note">Tap a monster to play.</p><div class="town-crew" aria-label="Your monster friends">${friendMarkup()}</div><p id="town-play-status" class="town-play-status" role="status" aria-live="polite"></p></div>
       <div class="destinations">${Object.entries(GAMES).map(([view,game])=>`<button class="destination" id="open-${view}" aria-label="${game.title}"><span class="destination-art">${art(game.teacher)}${view==='shape'?art('sunny'):''}</span><span class="destination-title">${game.title}</span><span class="destination-skill">${game.skill}</span></button>`).join('')}</div>
     </section>`;
     for(const view of Object.keys(GAMES))$('#open-'+view).onclick=()=>navigate(view);
+    townCleanup=activateFriends($('.town'));
     document.title='Blossom · Little math adventures';
     window.scrollTo({top:0,left:0,behavior:'instant'});
     return;

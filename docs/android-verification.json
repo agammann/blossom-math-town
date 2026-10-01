@@ -1,5 +1,6 @@
 {
   "checks": [
+    "All nine home-page monster gestures work in the installed APK, with all pose assets bundled offline.",
     "Real bundled British audio plays and mutes in the Android WebView with airplane mode enabled.",
     "Counting Garden: five complete practice rounds in the installed APK.",
     "Snack Lab: five complete practice rounds in the installed APK.",

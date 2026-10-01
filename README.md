@@ -27,6 +27,8 @@ The game checks are deterministic. A picture never becomes correct because of a 
 
 The native Vega TV app has ten five-round math games, character artwork, and a directional remote interface with visible focus, Select, and Back. It runs without a network connection. The native app was built with Vega SDK 0.24 and tested in the Ubuntu Vega Virtual Device. The browser and Android editions additionally include narrated lessons; the native Vega edition currently uses on-screen text. See [Vega build and demo instructions](vega/README.md).
 
+[Watch the 72-second Vega Virtual Device demo](https://youtu.be/zjgp8NjHxlU).
+
 ## Install the Android app
 
 On your Android phone or tablet, **[download the Blossom APK from GitHub](https://github.com/agammann/blossom-math-town/releases/latest/download/Blossom-Android-debug.apk)**.

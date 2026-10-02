@@ -330,10 +330,16 @@ if(tvMode)activateTv({navigate});
 // Optional WebMCP support uses the same in-tab game state and navigation.
 const context=document.modelContext;
 if(context?.registerTool) {
-  const lifecycle=new AbortController();
-  window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
+  let lifecycle;
+  const registerTools=()=>{
+  lifecycle?.abort();
+  lifecycle=new AbortController();
   for(const tool of [
     {name:'read_blossom_activity',description:'Read the current Blossom activity, lesson mode, and in-tab practice state.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:false},execute(input){if(!input||Object.keys(input).length)throw new Error('Expected an empty object');return {activity:state.view,mode:state.mode||null,round:state.round==null?null:state.round+1,given:state.given??null,berriesAdded:state.added?.length??null,solved:state.solved||false};}},
     {name:'start_blossom_activity',description:'Open a kindergarten activity in Blossom. Starts its replayable lesson view.',inputSchema:{type:'object',properties:{activity:{type:'string',enum:Object.keys(GAMES)}},required:['activity'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},async execute(input){if(!input||!Object.hasOwn(GAMES,input.activity)||Object.keys(input).length!==1)throw new Error('Choose a Blossom activity');if(location.hash==='#'+input.activity)openView(input.activity);else{navigate(input.activity);await new Promise(resolve=>window.addEventListener('hashchange',resolve,{once:true}));}return {activity:state.view,mode:state.mode};}}
   ])try{Promise.resolve(context.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{});}catch{}
+  };
+  window.addEventListener('pagehide',()=>lifecycle?.abort());
+  window.addEventListener('pageshow',event=>{if(event.persisted)registerTools();});
+  registerTools();
 }

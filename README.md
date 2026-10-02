@@ -40,6 +40,8 @@ On your Android phone or tablet, **[download the Blossom APK from GitHub](https:
 
 You can also open the [GitHub releases page](https://github.com/agammann/blossom-math-town/releases/latest) and choose the APK under **Assets**. Android 7.0 or newer is required. This is a debug-signed prototype, tested in an Android 16 emulator; physical phones and tablets still need testing.
 
+**Updating from v1.0.1:** v1.0.2 uses a different debug signing certificate. Uninstall the previous Blossom debug app before installing this APK. Android cannot replace the old app with a differently signed build. Uninstalling clears any app-local settings.
+
 ## Run the browser version locally
 
 Install **Node.js 22 or newer** (with npm), then:
@@ -101,6 +103,17 @@ The downloadable APK is **debug-signed for testing**, not a Play Store release. 
 - **Sound off** stops narration immediately. Captions and visual hints remain available when audio is muted, blocked, or unavailable.
 - **Calm motion** and the device's reduced-motion preference suppress decorative animation.
 - Completing five rounds offers a new set with **Play again**. Progress lasts only in the current tab/session.
+
+## Optional browser-agent tools
+
+Browsers that expose the native WebMCP API can use two tools on the open Blossom tab:
+
+| Tool | Effect |
+| --- | --- |
+| `read_blossom_activity` | Read the current activity, lesson/practice mode, and in-tab practice state. |
+| `start_blossom_activity` | Open one of the ten activities in its lesson view, using the same navigation as the game buttons. |
+
+These tools need no account, API key, model download, or server. Ordinary play works without WebMCP. Native registration and execution were verified in Edge 154 with its experimental WebMCP features enabled, including two real Back/Forward Cache restores. This does not establish compatibility with every browser agent. The tested Android WebView 133 does not expose the API.
 
 ## Privacy and offline use
 

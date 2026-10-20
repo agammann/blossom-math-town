@@ -24,7 +24,7 @@
     "@capacitor/core": "8.5.2"
   },
   "devDependencies": {
-    "@capacitor/android": "8.5.2",
+    "@capacitor/android": "8.5.3",
     "@capacitor/cli": "8.5.2",
     "esbuild": "^0.25.12"
   },

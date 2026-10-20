@@ -8,7 +8,7 @@ The local source preview server now opens assets through a bounded, verified reg
 
 Nine Node tests, including the local-server security regression, passed; the production static build and Android sync completed. Gradle 8.14.3 with JDK 21 and Android SDK 36 built the version-code 4 debug APK. Its signature verified, it requests no internet permission, and all 446 built web files matched their APK entries byte for byte. The two other public entries are generated Cordova loaders.
 
-The APK installed and launched in an Android 16 / API 36 emulator. Each of the ten games opened its practice screen and returned to the town. The earlier full five-round, narration, and offline-device checks belong to 1.0.2 and were not repeated for this build. The 1.0.3 debug certificate differs from 1.0.2, so the older debug app must be uninstalled before installing this one. Physical devices and audible speaker output remain untested.
+The APK installed and launched in an Android 16 / API 36 emulator. Each of the ten games opened its practice screen and returned to the town. With airplane mode enabled, the installed app reloaded and opened Counting Garden practice; the emulator's original network setting was restored afterward. The earlier full five-round and narration checks belong to 1.0.2 and were not repeated for this build. The 1.0.3 debug certificate differs from 1.0.2, so the older debug app must be uninstalled before installing this one. Physical devices and audible speaker output remain untested.
 
 ## Version 1.0.2 follow-up — October 2, 2026
 

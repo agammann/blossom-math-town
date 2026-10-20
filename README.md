@@ -40,7 +40,7 @@ On your Android phone or tablet, **[download the Blossom APK from GitHub](https:
 
 You can also open the [GitHub releases page](https://github.com/agammann/blossom-math-town/releases/latest) and choose the APK under **Assets**. Android 7.0 or newer is required. This is a debug-signed prototype, tested in an Android 16 emulator; physical phones and tablets still need testing.
 
-**Updating from v1.0.1:** v1.0.2 uses a different debug signing certificate. Uninstall the previous Blossom debug app before installing this APK. Android cannot replace the old app with a differently signed build. Uninstalling clears any app-local settings.
+**Updating from v1.0.2:** v1.0.3 uses a different debug signing certificate. Uninstall the previous Blossom debug app before installing this APK. Android cannot replace the old app with a differently signed build. Uninstalling clears any app-local settings. The games and narration are unchanged; this release also protects the local source preview server from asset-path swaps.
 
 ## Run the browser version locally
 

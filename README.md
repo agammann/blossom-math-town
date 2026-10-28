@@ -141,3 +141,9 @@ docs/                 Screenshots and verification notes
 ```
 
 Code and original Blossom illustrations are offered under the [MIT license](LICENSE). Nunito, Kokoro, Capacitor, and Android dependencies retain their own licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the notices bundled with the assets. Contributions that keep the app child-friendly, accessible, deterministic, and free of tracking are welcome.
+
+## Routine Android CI boundary
+
+`Verify Android APK` compiles the existing Android wrapper on a disposable Ubuntu 24.04 runner, verifies the debug signature and every bundled web asset against the production build, and retains the APK, exact asset hashes and runner/JDK/SDK evidence for 14 days. It uses only the runner's provisioned Android SDK; automatic SDK downloads are disabled and no SDK license is accepted by the workflow. A missing SDK package is a real failed prerequisite, not a skipped/pass result.
+
+This is an APK **compile/content gate**, not fresh-install or Android/TV emulator validation. Mobile/TV navigation, Back/relaunch, media/audio, storage recovery and accessibility still need a compatible disposable emulator/device. Native Vega packages require the separate Vega SDK and supported virtual device; an Android result does not establish Vega behavior. Physical Fire TV hardware performance must be measured before bundle optimization. Nothing in this lane publishes an APK or contacts a companion/provider.

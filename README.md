@@ -67,7 +67,7 @@ Upload the contents of `dist/` to a static web host to share your own browser ve
 
 The `android/` directory is a real Capacitor Android Studio project, not a link to the hosted website. It packages the same ten games, artwork, fonts, and all 404 voice clips locally.
 
-Requirements: Android Studio, **Java/JDK 21**, Android SDK **platform 36**, and the SDK build tools. Minimum Android version is **7.0 / API 24**. The included Gradle wrapper uses Gradle 8.14.3. Set Android Studio's **Gradle JDK to Java 21**, particularly if your Studio installation bundles Java 25.
+Requirements: Android Studio, **Java/JDK 21**, Android SDK **platform 36**, and the SDK build tools. Minimum Android version is **7.0 / API 24**. The included Gradle wrapper uses Gradle 9.9.0. Set Android Studio's **Gradle JDK to Java 21**, particularly if your Studio installation bundles Java 25.
 
 ```sh
 npm ci

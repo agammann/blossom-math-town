@@ -88,6 +88,7 @@ jobs:
           from pathlib import Path
           import xml.etree.ElementTree as ET
           import os
+          import re
           import subprocess
 
           values = Path("app/build/generated/res/processDebugGoogleServices/values/values.xml")
@@ -101,7 +102,11 @@ jobs:
               [str(aapt), "dump", "--values", "resources", apk],
               check=True, text=True, stdout=subprocess.PIPE,
           ).stdout
-          assert "1:123456789012:android:0123456789abcdef" in resources, "App ID missing from APK"
-          assert "123456789012" in resources, "Sender ID missing from APK"
+          for name, expected in {
+              "google_app_id": "1:123456789012:android:0123456789abcdef",
+              "gcm_defaultSenderId": "123456789012",
+          }.items():
+              pattern = rf"(?m)^\s*resource 0x[0-9a-f]+ [^\n]*:string/{re.escape(name)}:[^\n]*\n\s*\(string8\) \"{re.escape(expected)}\"$"
+              assert re.search(pattern, resources), f"Missing or incorrect APK resource: {name}"
           print("Verified synthetic Google Services resources and APK")
           PY

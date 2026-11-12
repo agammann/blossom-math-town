@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+let serverReady = false;
+for (let i = 0; i < 100; i++) {
+  try { if ((await fetch('http://127.0.0.1:4173/tv.html')).ok) { serverReady = true; break; } } catch {}
+  await delay(100);
+}
+assert.ok(serverReady, 'Vega HTTP server did not start');
 let target;
 for (let i = 0; i < 100; i++) {
   try {
@@ -20,12 +26,14 @@ socket.onmessage = event => {
   const entry = pending.get(data.id);
   if (!entry) return;
   pending.delete(data.id);
+  clearTimeout(entry.timer);
   if (data.error) entry.reject(new Error(data.error.message)); else entry.resolve(data.result);
 };
 function send(method, params = {}) {
   return new Promise((resolve, reject) => {
     const id = ++nextId;
-    pending.set(id, { resolve, reject });
+    const timer = setTimeout(() => { pending.delete(id); reject(new Error('CDP timeout: ' + method)); }, 10000);
+    pending.set(id, { resolve, reject, timer });
     socket.send(JSON.stringify({ id, method, params }));
   });
 }

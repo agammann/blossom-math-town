@@ -21,16 +21,11 @@
     "android:open": "cap open android"
   },
   "dependencies": {
-    "@capacitor/core": "8.5.2"
+    "@capacitor/core": "8.6.0"
   },
   "devDependencies": {
-    "@capacitor/android": "8.5.2",
-    "@capacitor/cli": "8.5.2",
+    "@capacitor/android": "8.6.0",
+    "@capacitor/cli": "8.6.0",
     "esbuild": "^0.25.12"
-  },
-  "overrides": {
-    "xcode": {
-      "uuid": "11.1.1"
-    }
   }
 }

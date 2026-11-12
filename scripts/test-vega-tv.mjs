@@ -43,7 +43,7 @@ async function waitFor(expression) {
 }
 async function key(key, code, keyCode) {
   const common = { key, code, windowsVirtualKeyCode: keyCode, nativeVirtualKeyCode: keyCode };
-  await send('Input.dispatchKeyEvent', { type: 'keyDown', ...common, ...(key === 'Enter' ? { text: '\\r', unmodifiedText: '\\r' } : {}) });
+  await send('Input.dispatchKeyEvent', { type: 'keyDown', ...common, ...(key === 'Enter' ? { text: '\r', unmodifiedText: '\r' } : {}) });
   await send('Input.dispatchKeyEvent', { type: 'keyUp', ...common });
 }
 try {

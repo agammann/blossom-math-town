@@ -43,11 +43,13 @@ async function waitFor(expression) {
 }
 async function key(key, code, keyCode) {
   const common = { key, code, windowsVirtualKeyCode: keyCode, nativeVirtualKeyCode: keyCode };
-  await send('Input.dispatchKeyEvent', { type: 'keyDown', ...common });
+  await send('Input.dispatchKeyEvent', { type: 'keyDown', ...common, ...(key === 'Enter' ? { text: '\\r', unmodifiedText: '\\r' } : {}) });
   await send('Input.dispatchKeyEvent', { type: 'keyUp', ...common });
 }
 try {
+  await send('Page.bringToFront');
   await waitFor("document.querySelectorAll('.destination').length === 10");
+  await delay(500);
   assert.equal(await evaluate("document.documentElement.dataset.tv"), 'true');
   await evaluate("document.querySelector('#open-count').focus()");
   await key('ArrowRight', 'ArrowRight', 39);

@@ -56,6 +56,7 @@ jobs:
         run: |
           set -eu
           fixture_path="$PWD/android/app/google-services.json"
+          test ! -e "$fixture_path" || { echo "Refusing to overwrite an existing Google Services configuration"; exit 1; }
           trap 'rm -f "$fixture_path"' EXIT
           python3 - <<'PY'
           import json

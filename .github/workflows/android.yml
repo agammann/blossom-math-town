@@ -55,7 +55,8 @@ jobs:
         shell: bash
         run: |
           set -eu
-          trap 'rm -f android/app/google-services.json' EXIT
+          fixture_path="$PWD/android/app/google-services.json"
+          trap 'rm -f "$fixture_path"' EXIT
           python3 - <<'PY'
           import json
           from pathlib import Path

@@ -87,11 +87,21 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import xml.etree.ElementTree as ET
+          import os
+          import subprocess
 
-          values = Path("app/build/generated/res/google-services/debug/values/values.xml")
+          values = Path("app/build/generated/res/processDebugGoogleServices/values/values.xml")
           assert values.is_file(), f"Missing generated resources: {values}"
           strings = {el.attrib.get("name"): el.text for el in ET.parse(values).getroot()}
           assert strings.get("google_app_id") == "1:123456789012:android:0123456789abcdef"
           assert strings.get("gcm_defaultSenderId") == "123456789012"
-          print("Verified synthetic Google Services resources")
+          aapt = sorted(Path(os.environ["ANDROID_HOME"]).glob("build-tools/*/aapt"))[-1]
+          apk = "app/build/outputs/apk/debug/app-debug.apk"
+          resources = subprocess.run(
+              [str(aapt), "dump", "--values", "resources", apk],
+              check=True, text=True, stdout=subprocess.PIPE,
+          ).stdout
+          assert "1:123456789012:android:0123456789abcdef" in resources, "App ID missing from APK"
+          assert "123456789012" in resources, "Sender ID missing from APK"
+          print("Verified synthetic Google Services resources and APK")
           PY

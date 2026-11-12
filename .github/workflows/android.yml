@@ -28,9 +28,9 @@ jobs:
           echo "JAVA_HOME=$JAVA_HOME_21_X64" >> "$GITHUB_ENV"
           echo "$JAVA_HOME_21_X64/bin" >> "$GITHUB_PATH"
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36"
-      - name: Build Android debug APK
+      - name: Build Android debug and unsigned release APKs
         working-directory: android
-        run: ./gradlew --no-daemon assembleDebug testDebugUnitTest
+        run: ./gradlew --no-daemon assembleDebug assembleRelease testDebugUnitTest
       - name: Verify packaged web assets
         shell: bash
         run: |

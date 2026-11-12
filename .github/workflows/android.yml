@@ -50,3 +50,46 @@ jobs:
                   assert archive.read(member) == file.read_bytes(), f"Asset mismatch: {member}"
           print(f"Verified {len(files)} web assets in {apk}")
           PY
+
+      - name: Verify Google Services with synthetic configuration
+        shell: bash
+        run: |
+          set -eu
+          trap 'rm -f android/app/google-services.json' EXIT
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          # All values are deliberately synthetic and do not contact Firebase.
+          config = {
+              "project_info": {
+                  "project_number": "123456789012",
+                  "project_id": "synthetic-ci-project",
+                  "storage_bucket": "synthetic-ci-project.invalid",
+              },
+              "client": [{
+                  "client_info": {
+                      "mobilesdk_app_id": "1:123456789012:android:0123456789abcdef",
+                      "android_client_info": {
+                          "package_name": "io.github.agammann.blossom",
+                      },
+                  },
+                  "api_key": [{"current_key": "synthetic-test-key-not-a-secret"}],
+              }],
+              "configuration_version": "1",
+          }
+          Path("android/app/google-services.json").write_text(json.dumps(config))
+          PY
+          cd android
+          ./gradlew --no-daemon :app:processDebugGoogleServices :app:assembleDebug
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          values = Path("app/build/generated/res/google-services/debug/values/values.xml")
+          assert values.is_file(), f"Missing generated resources: {values}"
+          strings = {el.attrib.get("name"): el.text for el in ET.parse(values).getroot()}
+          assert strings.get("google_app_id") == "1:123456789012:android:0123456789abcdef"
+          assert strings.get("gcm_defaultSenderId") == "123456789012"
+          print("Verified synthetic Google Services resources")
+          PY

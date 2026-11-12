@@ -26,6 +26,6 @@
   "devDependencies": {
     "@capacitor/android": "8.6.0",
     "@capacitor/cli": "8.6.0",
-    "esbuild": "^0.25.12"
+    "esbuild": "^0.28.2"
   }
 }

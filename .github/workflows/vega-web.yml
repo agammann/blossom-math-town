@@ -1,0 +1,26 @@
+name: Verify Vega web
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  vega-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm run vega:web
+      - name: Exercise TV navigation in Chrome
+        shell: bash
+        run: |
+          node scripts/serve.mjs vega-web > "$RUNNER_TEMP/vega-server.log" 2>&1 &
+          server_pid=$!
+          google-chrome --headless --no-sandbox --disable-gpu --remote-debugging-port=9222 --user-data-dir="$RUNNER_TEMP/vega-chrome" about:blank > "$RUNNER_TEMP/vega-chrome.log" 2>&1 &
+          chrome_pid=$!
+          trap 'kill "$server_pid" "$chrome_pid" 2>/dev/null || true' EXIT
+          node scripts/test-vega-tv.mjs

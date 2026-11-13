@@ -67,7 +67,7 @@ Upload the contents of `dist/` to a static web host to share your own browser ve
 
 The `android/` directory is a real Capacitor Android Studio project, not a link to the hosted website. It packages the same ten games, artwork, fonts, and all 404 voice clips locally.
 
-Requirements: Android Studio, **Java/JDK 21**, Android SDK **platform 36**, and the SDK build tools. Minimum Android version is **7.0 / API 24**. The included Gradle wrapper uses Gradle 8.14.3. Set Android Studio's **Gradle JDK to Java 21**, particularly if your Studio installation bundles Java 25.
+Requirements: Android Studio, **Java/JDK 21**, Android SDK **platform 36**, and the SDK build tools. Minimum Android version is **7.0 / API 24**. The included Gradle wrapper uses Gradle 9.9.0. Set Android Studio's **Gradle JDK to Java 21**, particularly if your Studio installation bundles Java 25.
 
 ```sh
 npm ci
@@ -144,6 +144,6 @@ Code and original Blossom illustrations are offered under the [MIT license](LICE
 
 ## Routine Android CI boundary
 
-`Verify Android APK` compiles the existing Android wrapper on a disposable Ubuntu 24.04 runner, verifies the debug signature and every bundled web asset against the production build, and retains the APK, exact asset hashes and runner/JDK/SDK evidence for 14 days. It uses only the runner's provisioned Android SDK; automatic SDK downloads are disabled and no SDK license is accepted by the workflow. A missing SDK package is a real failed prerequisite, not a skipped/pass result.
+`Verify Android` compiles and tests the existing Android wrapper on a hosted Ubuntu runner, checks the debug APK signature and bundled web assets against the production build, rejects the Internet permission, and retains the APK, asset hashes and runner/JDK evidence for 14 days. The existing workflow provisions its required Android platform with the SDK manager.
 
 This is an APK **compile/content gate**, not fresh-install or Android/TV emulator validation. Mobile/TV navigation, Back/relaunch, media/audio, storage recovery and accessibility still need a compatible disposable emulator/device. Native Vega packages require the separate Vega SDK and supported virtual device; an Android result does not establish Vega behavior. Physical Fire TV hardware performance must be measured before bundle optimization. Nothing in this lane publishes an APK or contacts a companion/provider.

@@ -1,54 +1,132 @@
-name: Verify Android APK
+name: Verify Android
+
 on:
   pull_request:
   push:
     branches: [main]
+
 permissions:
   contents: read
-concurrency:
-  group: android-apk-${{ github.ref }}
-  cancel-in-progress: true
+
 jobs:
-  android-apk:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
+  android:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
-          node-version: '24'
-      - run: npm ci
-      - run: npm test && npm run android:sync
-      - run: python scripts/test-verify-apk.py
-      - name: Use only the runner's provisioned JDK and Android SDK
+          node-version: 24
+      - name: Install and test web app
         run: |
-          test -x "$JAVA_HOME_21_X64/bin/java"
-          test -d "$ANDROID_HOME/platforms"
-          test -d "$ANDROID_HOME/build-tools"
+          npm ci
+          npm test
+          npm ls @capacitor/core @capacitor/android @capacitor/cli
+          npm run android:sync
+      - name: Prepare Java and Android SDK
+        shell: bash
+        run: |
           echo "JAVA_HOME=$JAVA_HOME_21_X64" >> "$GITHUB_ENV"
           echo "$JAVA_HOME_21_X64/bin" >> "$GITHUB_PATH"
-          mkdir -p reports
-          {
-            echo "Source: $GITHUB_SHA"
-            echo "Runner image: $ImageOS $ImageVersion"
-            "$JAVA_HOME_21_X64/bin/java" -version 2>&1
-            find "$ANDROID_HOME/platforms" "$ANDROID_HOME/build-tools" -maxdepth 2 -name source.properties -exec cat {} \;
-          } > reports/android-environment.txt
-      - name: Compile APK without SDK downloads or license acceptance
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36"
+      - name: Build Android debug and unsigned release APKs
         working-directory: android
-        run: bash gradlew --no-daemon --console=plain -Pandroid.builder.sdkDownload=false assembleDebug
-      - name: Verify delivered APK and exact offline assets
+        run: ./gradlew --no-daemon assembleDebug assembleRelease testDebugUnitTest
+      - name: Verify packaged web assets
+        shell: bash
         run: |
-          python scripts/verify-apk.py --apk android/app/build/outputs/apk/debug/app-debug.apk --report reports/apk-contents.json
-          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose android/app/build/outputs/apk/debug/app-debug.apk > reports/apk-signature.txt
-          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging android/app/build/outputs/apk/debug/app-debug.apk > reports/apk-badging.txt
-          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump permissions android/app/build/outputs/apk/debug/app-debug.apk > reports/apk-permissions.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          root = Path("dist")
+          files = [p for p in root.rglob("*") if p.is_file()]
+          assert (root / "index.html").is_file()
+          assert any(p.suffix == ".js" for p in files), "Missing JavaScript"
+          assert any(p.suffix == ".wav" for p in files), "Missing narration"
+          apk = "android/app/build/outputs/apk/debug/app-debug.apk"
+          with ZipFile(apk) as archive:
+              for file in files:
+                  member = "assets/public/" + file.relative_to(root).as_posix()
+                  assert archive.read(member) == file.read_bytes(), f"Asset mismatch: {member}"
+          print(f"Verified {len(files)} web assets in {apk}")
+          PY
+
+      - name: Verify Google Services with synthetic configuration
+        shell: bash
+        run: |
+          set -eu
+          fixture_path="$PWD/android/app/google-services.json"
+          test ! -e "$fixture_path" && test ! -L "$fixture_path" || { echo "Refusing to overwrite an existing Google Services configuration"; exit 1; }
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          # All values are deliberately synthetic and do not contact Firebase.
+          config = {
+              "project_info": {
+                  "project_number": "123456789012",
+                  "project_id": "synthetic-ci-project",
+                  "storage_bucket": "synthetic-ci-project.invalid",
+              },
+              "client": [{
+                  "client_info": {
+                      "mobilesdk_app_id": "1:123456789012:android:0123456789abcdef",
+                      "android_client_info": {
+                          "package_name": "io.github.agammann.blossom",
+                      },
+                  },
+                  "api_key": [{"current_key": "synthetic-test-key-not-a-secret"}],
+              }],
+              "configuration_version": "1",
+          }
+          with Path("android/app/google-services.json").open("x") as fixture:
+              json.dump(config, fixture)
+          PY
+          trap 'rm -f "$fixture_path"' EXIT
+          cd android
+          ./gradlew --no-daemon :app:processDebugGoogleServices :app:assembleDebug
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          import os
+          import re
+          import subprocess
+
+          values = Path("app/build/generated/res/processDebugGoogleServices/values/values.xml")
+          assert values.is_file(), f"Missing generated resources: {values}"
+          strings = {el.attrib.get("name"): el.text for el in ET.parse(values).getroot()}
+          assert strings.get("google_app_id") == "1:123456789012:android:0123456789abcdef"
+          assert strings.get("gcm_defaultSenderId") == "123456789012"
+          aapt = sorted(Path(os.environ["ANDROID_HOME"]).glob("build-tools/*/aapt"))[-1]
+          apk = "app/build/outputs/apk/debug/app-debug.apk"
+          resources = subprocess.run(
+              [str(aapt), "dump", "--values", "resources", apk],
+              check=True, text=True, stdout=subprocess.PIPE,
+          ).stdout
+          for name, expected in {
+              "google_app_id": "1:123456789012:android:0123456789abcdef",
+              "gcm_defaultSenderId": "123456789012",
+          }.items():
+              pattern = rf"(?m)^\s*resource 0x[0-9a-f]+ [^\n]*:string/{re.escape(name)}:[^\n]*\n\s*\(string8\) \"{re.escape(expected)}\"$"
+              assert re.search(pattern, resources), f"Missing or incorrect APK resource: {name}"
+          print("Verified synthetic Google Services resources and APK")
+          PY
+      - name: Verify APK integrity, signature, and built asset parity
+        shell: bash
+        run: |
+          set -eu
+          python3 scripts/test-verify-apk.py
+          mkdir -p reports
+          python3 scripts/verify-apk.py --apk android/app/build/outputs/apk/debug/app-debug.apk --report reports/apk-contents.json
+          build_tools=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1)
+          "$build_tools/apksigner" verify --verbose android/app/build/outputs/apk/debug/app-debug.apk > reports/apk-signature.txt
+          "$build_tools/aapt" dump badging android/app/build/outputs/apk/debug/app-debug.apk > reports/apk-badging.txt
+          "$build_tools/aapt" dump permissions android/app/build/outputs/apk/debug/app-debug.apk > reports/apk-permissions.txt
           if grep -q android.permission.INTERNET reports/apk-permissions.txt; then
             echo 'Offline Blossom APK must not request Internet permission.' >&2
             exit 1
           fi
+          { echo "Source: $GITHUB_SHA"; echo "Runner image: $ImageOS $ImageVersion"; java -version 2>&1; } > reports/android-environment.txt
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:

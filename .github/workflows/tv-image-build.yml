@@ -1,0 +1,38 @@
+name: Verify TV preview build
+on:
+  pull_request:
+    paths:
+      - Dockerfile.tv-preview
+      - package.json
+      - package-lock.json
+      - scripts/build-vega-web.mjs
+      - web/**
+      - .github/workflows/tv-image-build.yml
+permissions:
+  contents: read
+jobs:
+  compare-builds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build preview images using Node 22 and Node 26
+        shell: bash
+        run: |
+          set -euo pipefail
+          sed 's/^FROM node:26-alpine AS build$/FROM node:22-alpine AS build/' Dockerfile.tv-preview > "$RUNNER_TEMP/Dockerfile.tv-baseline"
+          cmp -s Dockerfile.tv-preview "$RUNNER_TEMP/Dockerfile.tv-baseline" && { echo 'Expected Node build-stage difference' >&2; exit 1; }
+          docker build -f "$RUNNER_TEMP/Dockerfile.tv-baseline" -t blossom-tv-node22-fixture .
+          docker build -f Dockerfile.tv-preview -t blossom-tv-node26-fixture .
+      - name: Compare all generated preview files
+        shell: bash
+        run: |
+          set -euo pipefail
+          old_id=$(docker create blossom-tv-node22-fixture)
+          new_id=$(docker create blossom-tv-node26-fixture)
+          docker cp "$old_id:/app" "$RUNNER_TEMP/old-app"
+          docker cp "$new_id:/app" "$RUNNER_TEMP/new-app"
+          test -f "$RUNNER_TEMP/new-app/tv.html"
+          diff -r "$RUNNER_TEMP/old-app" "$RUNNER_TEMP/new-app"

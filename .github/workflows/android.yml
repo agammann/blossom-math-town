@@ -28,29 +28,6 @@ jobs:
           echo "JAVA_HOME=$JAVA_HOME_21_X64" >> "$GITHUB_ENV"
           echo "$JAVA_HOME_21_X64/bin" >> "$GITHUB_PATH"
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36"
-      - name: Build Android debug and unsigned release APKs
-        working-directory: android
-        run: ./gradlew --no-daemon assembleDebug assembleRelease testDebugUnitTest
-      - name: Verify packaged web assets
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          from zipfile import ZipFile
-
-          root = Path("dist")
-          files = [p for p in root.rglob("*") if p.is_file()]
-          assert (root / "index.html").is_file()
-          assert any(p.suffix == ".js" for p in files), "Missing JavaScript"
-          assert any(p.suffix == ".wav" for p in files), "Missing narration"
-          apk = "android/app/build/outputs/apk/debug/app-debug.apk"
-          with ZipFile(apk) as archive:
-              for file in files:
-                  member = "assets/public/" + file.relative_to(root).as_posix()
-                  assert archive.read(member) == file.read_bytes(), f"Asset mismatch: {member}"
-          print(f"Verified {len(files)} web assets in {apk}")
-          PY
-
       - name: Verify Google Services with synthetic configuration
         shell: bash
         run: |
@@ -111,6 +88,33 @@ jobs:
               assert re.search(pattern, resources), f"Missing or incorrect APK resource: {name}"
           print("Verified synthetic Google Services resources and APK")
           PY
+      - name: Build clean Android debug and unsigned release APKs
+        working-directory: android
+        run: |
+          if [ -e app/google-services.json ] || [ -L app/google-services.json ]; then
+            echo 'The offline build requires the synthetic Google Services configuration to be removed.' >&2
+            exit 1
+          fi
+          ./gradlew --no-daemon clean assembleDebug assembleRelease testDebugUnitTest
+      - name: Verify packaged web assets
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          root = Path("dist")
+          files = [p for p in root.rglob("*") if p.is_file()]
+          assert (root / "index.html").is_file()
+          assert any(p.suffix == ".js" for p in files), "Missing JavaScript"
+          assert any(p.suffix == ".wav" for p in files), "Missing narration"
+          apk = "android/app/build/outputs/apk/debug/app-debug.apk"
+          with ZipFile(apk) as archive:
+              for file in files:
+                  member = "assets/public/" + file.relative_to(root).as_posix()
+                  assert archive.read(member) == file.read_bytes(), f"Asset mismatch: {member}"
+          print(f"Verified {len(files)} web assets in {apk}")
+          PY
       - name: Verify APK integrity, signature, and built asset parity
         shell: bash
         run: |
@@ -126,9 +130,14 @@ jobs:
             echo 'Offline Blossom APK must not request Internet permission.' >&2
             exit 1
           fi
+          "$build_tools/aapt" dump --values resources android/app/build/outputs/apk/debug/app-debug.apk > "$RUNNER_TEMP/blossom-debug-resources.txt"
+          if grep -Eq ':string/(google_app_id|gcm_defaultSenderId)(:|[[:space:]])' "$RUNNER_TEMP/blossom-debug-resources.txt"; then
+            echo 'Offline Blossom APK must not contain Google Services identifiers.' >&2
+            exit 1
+          fi
+          echo 'Offline APK contains no Google Services identifiers.' > reports/apk-google-services.txt
           { echo "Source: $GITHUB_SHA"; echo "Runner image: $ImageOS $ImageVersion"; java -version 2>&1; } > reports/android-environment.txt
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
-        if: always()
         with:
           name: android-apk-${{ github.sha }}
           path: |

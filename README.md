@@ -21,7 +21,7 @@ A friendly kindergarten math town with **10 playable games and 9 original monste
 | Sort & Spot | Sunny | Sort objects by colour, shape, or size |
 | Measure Meadow | Luna | Compare longer, shorter, and equal lengths |
 
-The game checks are deterministic. A picture never becomes correct because of a language-model response. This is a first kindergarten prototype, not a full curriculum or assessment system.
+Blossom offers short kindergarten practice with rule-based answer checking. A full curriculum and formal assessments are outside its scope.
 
 ## Vega OS TV build
 
@@ -38,7 +38,7 @@ On your Android phone or tablet, **[download the Blossom APK from GitHub](https:
 3. If Android asks for permission, allow your browser or file manager to install this download, then choose **Install**.
 4. Open **Blossom** and play. The games, pictures, and British narration are included for offline use.
 
-You can also open the [GitHub releases page](https://github.com/agammann/blossom-math-town/releases/latest) and choose the APK under **Assets**. Android 7.0 or newer is required. This is a debug-signed prototype, tested in an Android 16 emulator; physical phones and tablets still need testing.
+You can also open the [GitHub releases page](https://github.com/agammann/blossom-math-town/releases/latest) and choose the APK under **Assets**. Android 7.0 or newer is required. The debug-signed APK was tested in an Android 16 emulator. Physical phones and tablets still need testing.
 
 **Updating from v1.0.2:** v1.0.3 uses a different debug signing certificate. Uninstall the previous Blossom debug app before installing this APK. Android cannot replace the old app with a differently signed build. Uninstalling clears any app-local settings. The games and narration are unchanged; this release also protects the local source preview server from asset-path swaps.
 
@@ -95,7 +95,7 @@ The downloadable APK is **debug-signed for testing**, not a Play Store release. 
 
 ## Play and accessibility
 
-- Choose a game, watch its lesson, or press **My turn**.
+- Choose a game below the town. Watch its lesson or press **My turn** to practice.
 - Hover over a friend in the town to preview its gesture. Click, tap, or use Enter/Space to play a wink, wave, dance, kiss, point, peace sign, double wave, or happy fist raise.
 - Each of the nine friends appears once in the town. On a phone, swipe across the town to explore; keyboard focus also brings each friend into view. The ten game buttons sit below the scene.
 - Tap or click objects and answers. Keyboard users can Tab to a control and press Enter or Space. No dragging is required.
@@ -127,7 +127,7 @@ The Android build and locally served build include all assets and work without a
 
 Automated checks cover exhaustive arithmetic and comparisons, 0–20 number-trail coverage, pattern rules, complete sorting selections, all 404 voice files, and all nine teacher images. Browser testing covers all ten games on desktop and mobile widths, wrong-answer retries, hints/reset, five-round completion, replay, cancellation, keyboard/tap controls, and image/audio loading. See [verification details](docs/VERIFICATION.md).
 
-The Android debug APK was built successfully and tested in an Android 16 / API 36 emulator with airplane mode enabled. All ten games completed five practice rounds, all 404 voice clips loaded and decoded offline, real narration/mute worked, and native Back/background cancellation passed. Physical phones and tablets have not yet been tested. This is a tested prototype, not a store release.
+The published 1.0.3 Android debug APK opened all ten practice screens in an Android 16 / API 36 emulator and reopened Counting Garden in airplane mode. The full five-round practice, offline decoding of all 404 clips, narration and mute, and native Back and background cancellation were verified on 1.0.2. Physical phones, tablets, and audible speaker output still need testing.
 
 ## Project layout
 
@@ -144,6 +144,6 @@ Code and original Blossom illustrations are offered under the [MIT license](LICE
 
 ## Routine Android CI boundary
 
-`Verify Android` compiles and tests the existing Android wrapper on a hosted Ubuntu runner, checks the debug APK signature and bundled web assets against the production build, rejects the Internet permission, and retains the APK, asset hashes and runner/JDK evidence for 14 days. The existing workflow provisions its required Android platform with the SDK manager.
+`Verify Android` checks the optional Google Services plugin with synthetic configuration, removes the fixture, and rebuilds the regular offline Android wrapper from clean build outputs. The hosted runner checks that the debug APK carries the matching web assets and a valid signature, requests no Internet permission, and contains no fixture Google application ID. The passing job retains the APK, asset hashes and runner/JDK evidence for 14 days.
 
 This is an APK **compile/content gate**, not fresh-install or Android/TV emulator validation. Mobile/TV navigation, Back/relaunch, media/audio, storage recovery and accessibility still need a compatible disposable emulator/device. Native Vega packages require the separate Vega SDK and supported virtual device; an Android result does not establish Vega behavior. Physical Fire TV hardware performance must be measured before bundle optimization. Nothing in this lane publishes an APK or contacts a companion/provider.
